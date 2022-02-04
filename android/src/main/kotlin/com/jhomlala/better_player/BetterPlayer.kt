@@ -74,7 +74,7 @@ internal class BetterPlayer(
     customDefaultLoadControl: CustomDefaultLoadControl?,
     result: MethodChannel.Result
 ) {
-    private val exoPlayer: SimpleExoPlayer?
+    private val exoPlayer: ExoPlayer?
     private val eventSink = QueuingEventSink()
     private val trackSelector: DefaultTrackSelector = DefaultTrackSelector(context)
     private val loadControl: LoadControl
@@ -103,7 +103,7 @@ internal class BetterPlayer(
             this.customDefaultLoadControl.bufferForPlaybackAfterRebufferMs
         )
         loadControl = loadBuilder.build()
-        exoPlayer = SimpleExoPlayer.Builder(context)
+        exoPlayer = ExoPlayer.Builder(context)
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
             .build()
@@ -313,7 +313,7 @@ internal class BetterPlayer(
         playerNotificationManager!!.setUseStopAction(false)
         val mediaSession = setupMediaSession(context, false)
         playerNotificationManager!!.setMediaSessionToken(mediaSession.sessionToken)
-        playerNotificationManager!!.setControlDispatcher(setupControlDispatcher())
+        //playerNotificationManager!!.setControlDispatcher(setupControlDispatcher())
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             refreshHandler = Handler(Looper.getMainLooper())
             refreshRunnable = Runnable {
@@ -346,6 +346,7 @@ internal class BetterPlayer(
         exoPlayer.seekTo(0)
     }
 
+/*
     private fun setupControlDispatcher(): ControlDispatcher {
         return object : ControlDispatcher {
             override fun dispatchPrepare(player: Player): Boolean {
@@ -419,6 +420,7 @@ internal class BetterPlayer(
             }
         }
     }
+*/
 
     fun disposeRemoteNotifications() {
         if (exoPlayerEventListener != null) {
@@ -564,7 +566,7 @@ internal class BetterPlayer(
         }
     }
 
-    private fun setAudioAttributes(exoPlayer: SimpleExoPlayer?, mixWithOthers: Boolean) {
+    private fun setAudioAttributes(exoPlayer: ExoPlayer?, mixWithOthers: Boolean) {
         val audioComponent = exoPlayer!!.audioComponent ?: return
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             audioComponent.setAudioAttributes(
@@ -686,7 +688,7 @@ internal class BetterPlayer(
         mediaSession.isActive = true
         val mediaSessionConnector = MediaSessionConnector(mediaSession)
         if (setupControlDispatcher) {
-            mediaSessionConnector.setControlDispatcher(setupControlDispatcher())
+            //mediaSessionConnector.setControlDispatcher(setupControlDispatcher())
         }
         mediaSessionConnector.setPlayer(exoPlayer)
         this.mediaSession = mediaSession
