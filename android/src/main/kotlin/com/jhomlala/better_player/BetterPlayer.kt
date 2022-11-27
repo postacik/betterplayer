@@ -466,10 +466,7 @@ internal class BetterPlayer(
             mediaItemBuilder.setCustomCacheKey(cacheKey)
         }
         val mediaItem = mediaItemBuilder.build()
-        var drmSessionManagerProvider: DrmSessionManagerProvider? = null
-        if (drmSessionManager != null) {
-            drmSessionManagerProvider = DrmSessionManagerProvider { drmSessionManager!! }
-        }
+        var drmSessionManagerProvider: DrmSessionManagerProvider = DrmSessionManagerProvider { drmSessionManager!! }
         return when (type) {
             C.TYPE_SS -> SsMediaSource.Factory(
                 DefaultSsChunkSource.Factory(mediaDataSourceFactory),
@@ -501,6 +498,7 @@ internal class BetterPlayer(
     private fun setupVideoPlayer(
         eventChannel: EventChannel, textureEntry: SurfaceTextureEntry, result: MethodChannel.Result
     ) {
+        /*
         eventChannel.setStreamHandler(
             object : EventChannel.StreamHandler {
                 override fun onListen(o: Any?, sink: EventSink) {
@@ -511,6 +509,7 @@ internal class BetterPlayer(
                     eventSink.setDelegate(null)
                 }
             })
+        */
         surface = Surface(textureEntry.surfaceTexture())
         exoPlayer!!.setVideoSurface(surface)
         setAudioAttributes(exoPlayer, true)
